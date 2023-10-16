@@ -1,0 +1,46 @@
+* {
+    box-sizing: border-box;
+    font-family: consolas, monospace;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #ddd;
+    text-align: center;
+
+}
+
+
+#time-container {
+    background-color: #eb3c27;
+    border-radius: 48px;
+    padding: 50px 80px;
+}
+
+h2 {
+    color: #ddd;
+}
+
+#time-digits {
+    color: #ddd;
+    font-size: 100px;
+    padding-bottom: 30px;
+}
+
+.timer-button {
+    width: 80px;
+    height: 30px;
+    border-radius: 8px;
+    background-color: #ddd;
+    color: #eb3c27;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 0 10px 0 10px;
+}
+
+
+
