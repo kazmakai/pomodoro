@@ -35,15 +35,20 @@ Extras:
 /*----- app's state (variables) -----*/
 const digits = document.getElementById('time-digits');
 let startButton = document.getElementById('start-button');
-let seconds = 10;
-let pomodoroTime; 
-let breakTime;
+let resetButton = document.getElementById('reset-button');
+let pomodoroTime = 5; //25 minutes
+let breakTime = 5; //5 minutes
+
+let pauseButton
+
 
 /*----- cached elements  -----*/
+title = document.querySelector('h2');
 
 
 /*----- event listeners -----*/
-startButton.addEventListener('click', countDown);
+startButton.addEventListener('click', countdown);
+resetButton.addEventListener('click', init);
 //input to enter tasks to an unordered list
 //once checked off, they disappear
 
@@ -53,27 +58,66 @@ startButton.addEventListener('click', countDown);
 /*----- functions -----*/
 init();
 
-//visualize the timer
+//default state
 function init() {
-    pomodoroTime = `25:00`
-
+    digits.innerHTML = `00:05`;
+    clearInterval(timer);
 }
 
 function pause() {
+    startButton.innerHTML = ('Pause');
 
 }
 
-//countdown function
-function countDown() {
-    const timer = setInterval(() => {
-        if (seconds <= 0) {
+function breakCountdown() {
+    title.innerHTML = ("Break!");
+    const background = document.getElementById('time-container');
+    background.style.backgroundColor = '#35953e';
+    let timer = setInterval(() => {
+        if (breakTime <= 0) {
             clearInterval(timer);
         } else {
-            seconds--;
+            breakTime--;
         }
-        startButton.innerHTML = ('Pause');
-        digits.innerHTML = `00:${seconds}`;
+        timeDisplay(breakTime)
     }, 1000)
+}
+
+function countdown() {
+    let timer = setInterval(() => {
+        if (pomodoroTime <= 0) {
+            clearInterval(timer);
+            breakCountdown();
+        } else {
+            pomodoroTime--;
+        }
+        //startButton.innerHTML = ('Pause');
+        timeDisplay(pomodoroTime);
+    }, 1000)
+}
+
+
+//countdown function
+// function countdown() {
+//     const timer = setInterval(() => {
+//         if (timeSeconds <= 0) {
+//             clearInterval(timer);
+//         } else {
+//             timeSeconds--;
+//         }
+//         startButton.innerHTML = ('Pause');
+//         timeDisplay(timeSeconds);
+//     }, 1000)
+// }
+
+
+
+
+//formatting the display of the digits to min and sec
+function timeDisplay(second) {
+    const min = Math.floor(second / 60);
+    const sec = Math.floor(second % 60);
+    digits.innerHTML = `${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`
 }
 
 // //reset pomodoro
