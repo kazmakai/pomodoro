@@ -14,7 +14,7 @@ body {
 }
 
 
-#time-container {
+#timer-container {
     background-color: #eb3c27;
     border-radius: 48px;
     padding: 50px 80px;
@@ -24,7 +24,7 @@ h2 {
     color: #ddd;
 }
 
-#time-digits {
+#timer-digits {
     color: #ddd;
     font-size: 100px;
     padding-bottom: 30px;
@@ -35,7 +35,7 @@ h2 {
     height: 30px;
     border-radius: 8px;
     background-color: #ddd;
-    color: #fb3941;
+    color: #000;
     border: none;
     font-size: 16px;
     cursor: pointer;
