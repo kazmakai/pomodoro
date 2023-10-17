@@ -28,94 +28,93 @@ Extras:
 
 
 
-//*----- constants -----*/
-let pomodoro = 10; //25 minutes
-let shortBreak = 5; //5 minutes
-const longBreak = 15; //15 minutes
-let isPaused = false;
+/*----- constants -----*/
+const pomodoro = 3; // 10 seconds for testing
+const shortBreak = 3; // 5 seconds for testing
+
+/*----- app's state -----*/
 let timer;
+let remainingTime = 0;
+let timerDigits = document.getElementById('timer-digits');
+let isPaused = false; // track whether the timer was paused
+let isPomodoro = true; // track the current phase (Pomodoro or break)
 
-
-/*----- app's state (variables) -----*/
-const timerDigits = document.getElementById('timer-digits');
-let startPauseButton = document.getElementById('startpause-button');
-let resetButton = document.getElementById('reset-button');
-
-/*----- cached elements  -----*/
-title = document.querySelector('h2');
-
+/*----- cached elements -----*/
+const title = document.querySelector('h2');
+const timerBackground = document.getElementById('timer-container');
+const startPauseButton = document.getElementById('startpause-button');
+const resetButton = document.getElementById('reset-button');
 
 /*----- event listeners -----*/
-startPauseButton.addEventListener('click', startPauseTimer);//dont call countdown. call a function with an if statement that either calls countdown or pause
+startPauseButton.addEventListener('click', toggleCountdown);
 resetButton.addEventListener('click', init);
-//input to enter tasks to an unordered list
-//once checked off, they disappear
-
-//start button to start countdown and change text to pause
-//reset button to change everything to initial state. Prompt user if they're really sure they want to reset with a pop-up.
 
 /*----- functions -----*/
 init();
 
-//default state
 function init() {
-    timerDigits.innerHTML = `00:10`;
-
+  clearInterval(timer)
+  startPauseButton.innerHTML = ('Start');
+  isPaused = false;
+  timerDigits.innerHTML = `00:03`;
+  remainingTime = pomodoro;
+  isPomodoro = true; // Set the initial phase to Pomodoro
 }
 
-function startPauseTimer() {
-    if (startPauseButton.innerHTML === ('Start')) {
-        pomodoroCountdown();
-    } else {
-        pause();
-    }
+function toggleCountdown() {
+  if (isPaused === true) {
+    start();
+  } else {
+    pause();
+  }
 }
 
-
-function breakCountdown() {
-    title.innerHTML = ("Time for a break!");
-    const background = document.getElementById('timer-container');
-    background.style.backgroundColor = '#35953e';
-    let timer = setInterval(() => {
-        if (shortBreak <= 0) {
-            clearInterval(timer);
-        } else {
-            shortBreak--;
-        }
-        timeDisplay(shortBreak)
-    }, 1000)
-}
-
-
-function pomodoroCountdown() {
-    startPauseButton.innerHTML = ('Pause')
-    isPaused = false;
-    let timer = setInterval(() => {
-        if (pomodoro <= 0) {
-            clearInterval(timer);
-            breakCountdown();
-        } else {
-            if (isPaused === true) {
-            } else {
-                pomodoro--;
-            }
-        }
-        timeDisplay(pomodoro);
-    }, 1000)
+function start() {
+  isPaused = false;
+  startPauseButton.innerHTML = ('Pause');
+  if (remainingTime > 0) {
+    // If the timer was paused, continue from the remaining time
+    countdown(remainingTime);
+  } else {
+    countdown(isPomodoro ? pomodoro : shortBreak); // Start with Pomodoro or break based on the current phase
+  }
 }
 
 function pause() {
-    startPauseButton.innerHTML = ('Start')
-    isPaused = true;
+  isPaused = true;
+  startPauseButton.innerHTML = ('Start');
+  clearInterval(timer);
 }
 
-
-//formatting the display of the digits to min and sec
-function timeDisplay(second) {
-    const min = Math.floor(second / 60);
-    const sec = Math.floor(second % 60);
-    timerDigits.innerHTML = `${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`
+function countdown(time) {
+  timer = setInterval(() => {
+    if (time <= 0) {
+      clearInterval(timer);
+      isPomodoro = !isPomodoro; // Switch between Pomodoro and break phases
+      if (isPomodoro) {
+        title.innerHTML = "Pomodoro";
+        timerBackground.style.backgroundColor = '#eb3c27';
+        countdown(pomodoro);
+      } else {
+        title.innerHTML = "Break Time";
+        timerBackground.style.backgroundColor = '#35953e';
+        countdown(shortBreak);
+      }
+    } else {
+      if (isPaused === true) {
+        remainingTime = time; // Update remainderTime as the timer counts down
+        clearInterval(timer);
+      } else {
+        remainingTime = time; // Update remainderTime as the timer counts down
+        time--;
+      }
+    }
+    timerDisplay(time);
+  }, 1000);
 }
 
-// //reset pomodoro
-// function reset()
+function timerDisplay(second) {
+  const min = Math.floor(second / 60);
+  const sec = Math.floor(second % 60);
+  timerDigits.innerHTML = `${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`
+}

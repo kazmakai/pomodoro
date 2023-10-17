@@ -10,7 +10,7 @@ body {
     height: 100vh;
     background-color: #ddd;
     text-align: center;
-
+    overflow: hidden;
 }
 
 
