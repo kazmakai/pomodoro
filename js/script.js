@@ -1,42 +1,25 @@
 /* --- Pomodoro App ---
 
 - 1 pomodoro is 25:00
-- Normal breaks are 5:00
-- If there are over 3 pomodoros, after the third one, the break will be 15:00
-
-- There's one break in between two pomodoros. That means, there won't be a break if the user only set one pomodoro.
-- User needs to first select how many pomodoros they'd like, the duration of each break (5:00 or 15:00), and the tasks they'd like to work on.
-- It will let them know what time it'll end
-- The user can choose to end it early, or let it finish running by itself.
-- Give a summary of the session whenever it ends: time spent, tasks completed, breaks taken.
-- Store data in web local storage.
+- Short breaks are 5:00
 - "Dings" when pomodoro starts and ends.
-- "Ticks" the last 3 seconds.
 - Play button changes to a pause button when clicked.
-- An alert that says "Are you sure you want to reset your pomodoro?" when the reset button is clicked.
 
 Extras: 
 - Create a dark mode option.
 - Allow users to turn sound off.
-- An about pop-up that explains how to use it. 
-- Add tasks
-- Add gradient or a more interesting picture to the background
-- Progress bar/circle
-- Timer digits change to red in the last 3 seconds.
 */
 
 
-
-
 /*----- constants -----*/
-const pomodoro = 3; // 10 seconds for testing
+const pomodoro = 5; // 10 seconds for testing
 const shortBreak = 3; // 5 seconds for testing
 
 /*----- app's state -----*/
 let timer;
 let remainingTime = 0;
 let timerDigits = document.getElementById('timer-digits');
-let isPaused = false; // track whether the timer was paused
+let isPaused = true; // track whether the timer was paused
 let isPomodoro = true; // track the current phase (Pomodoro or break)
 
 /*----- cached elements -----*/
@@ -45,27 +28,41 @@ const timerBackground = document.getElementById('timer-container');
 const startPauseButton = document.getElementById('startpause-button');
 const resetButton = document.getElementById('reset-button');
 
+const soundButton = document.getElementById('play-sound')
+
 /*----- event listeners -----*/
 startPauseButton.addEventListener('click', toggleCountdown);
 resetButton.addEventListener('click', init);
+soundButton.addEventListener('playSound');
 
 /*----- functions -----*/
 init();
 
 function init() {
+  const ding = new Audio();
+  ding.src = "./sounds/click_sound.wav"
+  ding.play();  
   clearInterval(timer)
   startPauseButton.innerHTML = ('Start');
-  isPaused = false;
-  timerDigits.innerHTML = `00:03`;
-  remainingTime = pomodoro;
+  isPaused = true;
   isPomodoro = true; // Set the initial phase to Pomodoro
+  title.innerHTML = "Pomodoro!";
+  timerBackground.style.backgroundColor = '#db594a';
+  timerDigits.innerHTML = `25:00`;
+  remainingTime = pomodoro;
 }
 
 function toggleCountdown() {
   if (isPaused === true) {
     start();
+    const ding = new Audio();
+    ding.src = "./sounds/click_sound.wav"
+    ding.play();
   } else {
     pause();
+    const ding = new Audio();
+    ding.src = "./sounds/click_sound.wav"
+    ding.play();
   }
 }
 
@@ -92,12 +89,18 @@ function countdown(time) {
       clearInterval(timer);
       isPomodoro = !isPomodoro; // Switch between Pomodoro and break phases
       if (isPomodoro) {
-        title.innerHTML = "Pomodoro";
-        timerBackground.style.backgroundColor = '#eb3c27';
+        const ding = new Audio();
+        ding.src = "./sounds/pomodoro_sound.mp3"
+        ding.play();
+        title.innerHTML = "Pomodoro!";
+        timerBackground.style.backgroundColor = '#db594a';
         countdown(pomodoro);
       } else {
-        title.innerHTML = "Break Time";
-        timerBackground.style.backgroundColor = '#35953e';
+        const ding = new Audio();
+        ding.src = "./sounds/break_sound.wav"
+        ding.play();
+        title.innerHTML = "Short break";
+        timerBackground.style.backgroundColor = '#808c45';
         countdown(shortBreak);
       }
     } else {
