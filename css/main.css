@@ -21,8 +21,8 @@ body {
     align-items: center;
     width: 600px;
     height: 550px;
-    background-color: #db594a;
-    border-radius: 30%;
+    background-color: #eb503f;
+    border-radius: 20%;
     padding: 50px 80px;
 }
 
@@ -50,8 +50,8 @@ h2 {
     width: 120px;
     height: 40px;
     border-radius: 8px;
-    background-color: #4c5a23;
-    color: #ddd;
+    background-color: #ddd;
+    color: #000;
     border: none;
     font-size: 16px;
     margin: 0 40px;
@@ -59,14 +59,42 @@ h2 {
 }
 
 .timer-button:hover {
-    background-color: #ddd;
-    color: #000;
+    background-color: #5d6c2f;
+    color: #ddd;
 }
 
 .timer-button:active {
-    background-color: #ddd;
-    color: #000;
+    background-color: #5d6c2f;
+    color: #ddd;
 }
+
+/* for smartphones */
+@media only screen and (max-width: 600px) {
+    body {
+        margin: 0;
+        text-align: center;
+    }
+
+    #timer-container {
+        padding: 0;
+        text-align: center;
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+
+    .timer-button {
+        margin: 0 20px;
+    }
+
+    #timer-digits {
+        font-size: 100px;
+    }
+
+    h2 {
+        font-size: 24px;
+    }
+  }
 
 
 

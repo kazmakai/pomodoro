@@ -13,7 +13,7 @@ Extras:
 
 /*----- constants -----*/
 const pomodoro = 5; // 10 seconds for testing
-const shortBreak = 3; // 5 seconds for testing
+const shortBreak = 5; // 5 seconds for testing
 
 /*----- app's state -----*/
 let timer;
@@ -47,8 +47,8 @@ function init() {
   isPaused = true;
   isPomodoro = true; // Set the initial phase to Pomodoro
   title.innerHTML = "Pomodoro!";
-  timerBackground.style.backgroundColor = '#db594a';
-  timerDigits.innerHTML = `25:00`;
+  timerBackground.style.backgroundColor = '#eb503f';
+  timerDigits.innerHTML = `00:05`;
   remainingTime = pomodoro;
 }
 
@@ -93,7 +93,7 @@ function countdown(time) {
         ding.src = "./sounds/pomodoro_sound.mp3"
         ding.play();
         title.innerHTML = "Pomodoro!";
-        timerBackground.style.backgroundColor = '#db594a';
+        timerBackground.style.backgroundColor = '#eb503f';
         countdown(pomodoro);
       } else {
         const ding = new Audio();
@@ -111,8 +111,8 @@ function countdown(time) {
         remainingTime = time; // Update remainderTime as the timer counts down
         time--;
       }
+      timerDisplay(time);
     }
-    timerDisplay(time);
   }, 1000);
 }
 
