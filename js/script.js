@@ -12,7 +12,7 @@ Extras:
 
 
 /*----- constants -----*/
-const pomodoro = 5; // 10 seconds for testing
+const pomodoro = 10; // 10 seconds for testing
 const shortBreak = 5; // 5 seconds for testing
 
 /*----- app's state -----*/
@@ -23,7 +23,7 @@ let isPaused = true; // track whether the timer was paused
 let isPomodoro = true; // track the current phase (Pomodoro or break)
 
 /*----- cached elements -----*/
-const title = document.querySelector('h2');
+const title = document.querySelector('h1');
 const timerBackground = document.getElementById('timer-container');
 const startPauseButton = document.getElementById('startpause-button');
 const resetButton = document.getElementById('reset-button');
@@ -32,13 +32,13 @@ const soundButton = document.getElementById('play-sound')
 
 /*----- event listeners -----*/
 startPauseButton.addEventListener('click', toggleCountdown);
-resetButton.addEventListener('click', init);
+resetButton.addEventListener('click', reset);
 soundButton.addEventListener('playSound');
 
 /*----- functions -----*/
-init();
+reset();
 
-function init() {
+function reset() {
   const ding = new Audio();
   ding.src = "./sounds/click_sound.wav"
   ding.play();  
@@ -48,7 +48,7 @@ function init() {
   isPomodoro = true; // Set the initial phase to Pomodoro
   title.innerHTML = "Pomodoro!";
   timerBackground.style.backgroundColor = '#eb503f';
-  timerDigits.innerHTML = `00:05`;
+  timerDigits.innerHTML = `00:10`;
   remainingTime = pomodoro;
 }
 
@@ -90,14 +90,14 @@ function countdown(time) {
       isPomodoro = !isPomodoro; // Switch between Pomodoro and break phases
       if (isPomodoro) {
         const ding = new Audio();
-        ding.src = "./sounds/pomodoro_sound.mp3"
+        ding.src = "./sounds/break_sound.wav"
         ding.play();
         title.innerHTML = "Pomodoro!";
         timerBackground.style.backgroundColor = '#eb503f';
         countdown(pomodoro);
       } else {
         const ding = new Audio();
-        ding.src = "./sounds/break_sound.wav"
+        ding.src = "./sounds/pomodoro_sound.mp3"
         ding.play();
         title.innerHTML = "Short break";
         timerBackground.style.backgroundColor = '#808c45';
