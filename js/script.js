@@ -1,19 +1,8 @@
-/* --- Pomodoro App ---
-
-- 1 pomodoro is 25:00
-- Short breaks are 5:00
-- "Dings" when pomodoro starts and ends.
-- Play button changes to a pause button when clicked.
-
-Extras: 
-- Create a dark mode option.
-- Allow users to turn sound off.
-*/
-
-
 /*----- constants -----*/
-const pomodoro = 10; // 10 seconds for testing
-const shortBreak = 5; // 5 seconds for testing
+let pomodoro = 10; // 10 secs for testing
+let shortBreak = 5; // 5 sec for texting
+// let longBreak = 10 // not working yet
+let soundEffect = new Audio(); // include sound effects when rest button is clicked
 
 /*----- app's state -----*/
 let timer;
@@ -28,21 +17,18 @@ const timerBackground = document.getElementById('timer-container');
 const startPauseButton = document.getElementById('startpause-button');
 const resetButton = document.getElementById('reset-button');
 
-const soundButton = document.getElementById('play-sound')
-
 /*----- event listeners -----*/
 startPauseButton.addEventListener('click', toggleCountdown);
 resetButton.addEventListener('click', reset);
-soundButton.addEventListener('playSound');
 
 /*----- functions -----*/
 reset();
 
+// reset to default state
 function reset() {
-  const ding = new Audio();
-  ding.src = "./sounds/click_sound.wav"
-  ding.play();  
-  clearInterval(timer)
+  soundEffect.src = "./sounds/click_sound.wav"
+  soundEffect.play();  
+  clearInterval(timer) 
   startPauseButton.innerHTML = ('Start');
   isPaused = true;
   isPomodoro = true; // Set the initial phase to Pomodoro
@@ -52,12 +38,12 @@ function reset() {
   remainingTime = pomodoro;
 }
 
+// toggle between Pomodoro and Break modes
 function toggleCountdown() {
   if (isPaused === true) {
     start();
-    const ding = new Audio();
-    ding.src = "./sounds/click_sound.wav"
-    ding.play();
+    soundEffect.src = "./sounds/click_sound.wav"
+    soundEffect.play();
   } else {
     pause();
     const ding = new Audio();
@@ -66,41 +52,52 @@ function toggleCountdown() {
   }
 }
 
+// start timer
 function start() {
   isPaused = false;
   startPauseButton.innerHTML = ('Pause');
-  if (remainingTime > 0) {
-    // If the timer was paused, continue from the remaining time
+  if (remainingTime > 0) { // If the timer is paused, count down from remaining time
     countdown(remainingTime);
   } else {
-    countdown(isPomodoro ? pomodoro : shortBreak); // Start with Pomodoro or break based on the current phase
+    countdown(isPomodoro ? pomodoro : shortBreak); // if the current state is Pomodoro, countdown from the Pomodoro time, else with the break time
   }
 }
 
+// pause timer
 function pause() {
   isPaused = true;
   startPauseButton.innerHTML = ('Start');
   clearInterval(timer);
 }
 
+// if (pomodoro === 0) {
+//   pomodoroCount ++;
+// }
+
+// if (pomodoroCount === 4) {
+//   longBreak();
+// }
+
+// countdown logic
 function countdown(time) {
   timer = setInterval(() => {
     if (time <= 0) {
       clearInterval(timer);
       isPomodoro = !isPomodoro; // Switch between Pomodoro and break phases
       if (isPomodoro) {
-        const ding = new Audio();
-        ding.src = "./sounds/break_sound.wav"
-        ding.play();
+        // pomodoroCount ++;
+        soundEffect.src = "./sounds/break_sound.wav"
+        soundEffect.play();
         title.innerHTML = "Pomodoro!";
         timerBackground.style.backgroundColor = '#eb503f';
+        timerDigits.innerHTML = `00:${pomodoro}`;
         countdown(pomodoro);
       } else {
-        const ding = new Audio();
-        ding.src = "./sounds/pomodoro_sound.mp3"
-        ding.play();
+        soundEffect.src = "./sounds/pomodoro_sound.mp3"
+        soundEffect.play();
         title.innerHTML = "Short break";
         timerBackground.style.backgroundColor = '#808c45';
+        timerDigits.innerHTML = `00:0${shortBreak}`;
         countdown(shortBreak);
       }
     } else {
@@ -116,6 +113,9 @@ function countdown(time) {
   }, 1000);
 }
 
+
+
+// formating the display so that min and sec have 2 digits
 function timerDisplay(second) {
   const min = Math.floor(second / 60);
   const sec = Math.floor(second % 60);

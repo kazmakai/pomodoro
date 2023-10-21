@@ -9,7 +9,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #d5ae60;
+    background-color: #80a55f;
     text-align: center;
     overflow: hidden;
 }
@@ -22,7 +22,7 @@ body {
     align-items: center;
     width: 650px;
     height: 550px;
-    background-color: #eb503f;
+    background-color: #BA4B3A;
     border: 5px solid black;
     border-radius: 10%;
     padding: 50px 80px;
@@ -50,7 +50,13 @@ p {
 }
 
 a {
-    color: #495427;
+    color: black;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #eb503f;
 }
 
 #timer-digits {
@@ -115,6 +121,7 @@ a {
 
     footer {
         margin-bottom: 20px;
+        width: 450px;
     }
 
     .timer-button {
